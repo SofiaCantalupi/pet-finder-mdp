@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pet-finder-mdp.iml" filepath="$PROJECT_DIR$/.idea/pet-finder-mdp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pet-finder-mdp/pet-finder-mdp.iml" filepath="$PROJECT_DIR$/pet-finder-mdp/pet-finder-mdp.iml" />
     </modules>
   </component>
 </project>
