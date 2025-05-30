@@ -12,6 +12,8 @@ public class ComentarioDetailDTO {
 
     private LocalDate fechaPublicacion;
 
+    private Boolean activo;
+
     private Long idPublicacion;
 
     private Long idUsuario;

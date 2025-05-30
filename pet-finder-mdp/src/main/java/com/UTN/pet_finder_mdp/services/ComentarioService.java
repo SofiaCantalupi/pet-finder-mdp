@@ -4,7 +4,6 @@ package com.UTN.pet_finder_mdp.services;
 import com.UTN.pet_finder_mdp.dto.ComentarioDetailDTO;
 import com.UTN.pet_finder_mdp.dto.ComentarioListDTO;
 import com.UTN.pet_finder_mdp.dto.ComentarioRequestDTO;
-import com.UTN.pet_finder_mdp.dto.ComentarioResponseDTO;
 import com.UTN.pet_finder_mdp.models.Comentario;
 import com.UTN.pet_finder_mdp.repositories.ComentarioRepository;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,8 @@ public class ComentarioService {
     //private final
     //private final
     //agregar los repositorios de publicacion y de usuario porque son necesarios para buscarlos por id
+
+
 
 
 
@@ -40,7 +41,7 @@ public class ComentarioService {
         Usuario usuario = usuarioRepository.findById(requestDTO.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con esa ID " + requestDTO.getIdUsuario()));
 
-
+        //cambiar la exception a entityNotFound
 
 
         Comentario comentario = new Comentario();
@@ -71,8 +72,7 @@ public class ComentarioService {
 
 
 
-    //listar todos los comentarios, ve todos los comentarios desde ComentariosRespository
-    // y los pasa a ComentarioListDTO para mostrarlos desde ahi y no desde le entidad Comentario
+
     public List<ComentarioListDTO> listarComentarios() {
         return comentarioRepository.findAll().stream()
                 .map(comentario -> new ComentarioListDTO(
