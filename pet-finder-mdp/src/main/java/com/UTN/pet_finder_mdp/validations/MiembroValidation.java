@@ -1,11 +1,20 @@
 package com.UTN.pet_finder_mdp.validations;
 
+import com.UTN.pet_finder_mdp.exceptions.emailYaRegistradoException;
 import com.UTN.pet_finder_mdp.exceptions.formatoInvalidoException;
+import com.UTN.pet_finder_mdp.exceptions.usuarioNoEncontradoException;
 import com.UTN.pet_finder_mdp.models.Miembro;
+import com.UTN.pet_finder_mdp.repositories.MiembroRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MiembroValidation {
+
+    public final MiembroRepository miembroRepository;
+
+    public MiembroValidation(MiembroRepository miembroRepository) {
+        this.miembroRepository = miembroRepository;
+    }
 
     public void validarNombre(Miembro miembro){
         String regex = "^[A-Za-zñÑáéíóúÁÉÍÓÚ ]{3,15}$";
@@ -22,7 +31,30 @@ public class MiembroValidation {
             throw new formatoInvalidoException("El apellido no cumple con el formato. Recordá que no debe contener numeros y su longitud debe ser de 3 a 15 caracteres.");
         }
     }
+    public void validarContrasenia(Miembro miembro){
+        String regexContrasenia = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{6,15}$";
+        if(!miembro.getContrasenia().matches(regexContrasenia)){
+            throw new formatoInvalidoException("La contraseña no cumple con el formato. Recordá que debe tener como minimo una letra mayuscula," +
+                    " una letra miniscula, un numero, un caracter especial(Por ejemplo: !$%&_#) y su longitud debe ser de 6 a 15 caracteres.");
+        }
+    }
+    public void validarEmailRegistrado(Miembro miembro) {
+        miembroRepository.findByEmail(miembro.getEmail())
+                .ifPresent(miembroExistente -> {
+                    throw new emailYaRegistradoException("El mail ingresado ya existe en la base de datos.");
+                });
+    }
 
-    //Email
-    //Contraseña
+    public void validarExistenciaPorId(Long Id){
+            if(miembroRepository.findById(Id).isEmpty()){
+                throw new usuarioNoEncontradoException("No se encontró un usuario con el ID: " + Id);
+            }
+    }
+
+    public void validarExistenciaPorEmail(String email){
+        if(miembroRepository.findByEmail(email).isEmpty()){
+            throw new usuarioNoEncontradoException("No se encontró un usuario con el email: " + email);
+        }
+    }
+
 }

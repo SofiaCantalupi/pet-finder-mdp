@@ -1,5 +1,6 @@
 package com.UTN.pet_finder_mdp.exceptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+
+//Tengo que implementar el ResponseError y afilar los mensajes de error.
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +31,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(emailYaRegistradoException.class)
     public ResponseEntity<String> manejarEmailExistenteException(emailYaRegistradoException ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(formatoInvalidoException.class)
+    public ResponseEntity<String> manejarformatoInvalidoException(formatoInvalidoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(usuarioNoEncontradoException.class)
+    public ResponseEntity<String> manejarUsuarioNoEncontradoException(usuarioNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
